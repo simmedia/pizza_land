@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <v-container class="main" mt-12>
-      <v-row wrap class="mt-12">
+      <v-row wrap>
         <v-col xs="12" sm="6" class="jumbotron mt-12 order-sm-1">
           <h1 class="mainText display-2">Delicious and Tasty!</h1>
           <p class="mt-10 text--secondary subtitle-1">
