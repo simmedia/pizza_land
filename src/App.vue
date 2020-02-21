@@ -5,7 +5,9 @@
       <v-list dense>
         <v-list-item router style="cursor: pointer">
           <v-list-item-content>
-            <v-list-item-title>Menu</v-list-item-title>
+            <v-list-item-title>
+              <v-btn router to="/menu" text block>Menu</v-btn>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -29,13 +31,10 @@
         <v-btn to="/menu" text>
           <span class="mr-2">MENU</span>
         </v-btn>
-        <v-btn text>
+        <v-btn to="/about" text>
           <span class="mr-2">ABOUT US</span>
         </v-btn>
-        <v-btn text>
-          <span class="mr-2">DELIVERY</span>
-        </v-btn>
-        <v-btn text>
+        <v-btn to="/contact" text>
           <span class="mr-2">CONTACT</span>
         </v-btn>
       </v-toolbar-items>
@@ -98,10 +97,17 @@
 </template>
 
 <script>
+import { dbMenuRef } from "./firebase";
+import { dbOrdersRef } from "./firebase";
+
 export default {
   name: "App",
 
   components: {},
+  created() {
+    this.$store.dispatch("setMenuRef", dbMenuRef);
+    this.$store.dispatch("setOrdersRef", dbOrdersRef);
+  },
 
   data: () => ({
     drawer: false,
@@ -122,7 +128,7 @@ export default {
   }),
   methods: {
     goToHome() {
-      this.$router.push('/')
+      this.$router.push("/");
     }
   }
 };

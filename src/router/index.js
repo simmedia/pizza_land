@@ -2,11 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Menu from '@/components/Menu.vue'
+import Admin from '@/components/Admin.vue'
+import Contact from '../views/Contact.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-
+  {
+    path: '*',
+    redirect: '/'
+  },
   {
     path: '/',
     name: 'Home',
@@ -18,11 +23,19 @@ const routes = [
     component: Menu
   },
   {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  },
+
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
+  },
+  {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
@@ -31,7 +44,20 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  routes
+  routes,
+  scrollBehavior(to, from, savedPos) {
+    if(to.hash) {
+      return savedPos
+    } else {
+      return { x: 0, y: 0}
+    }
+  }
+
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('nav triggered')
+  next()
 })
 
 export default router

@@ -9,7 +9,7 @@
             accusantium qui, obcaecati numquam doloribus neque molestiae
             architecto quia, voluptate asperiores eos placeat error est!
           </p>
-          <v-btn color="my-10 red">
+          <v-btn @click="goToMenu" color="my-10 red">
             <span class="mr-2 white--text">ORDER NOW</span>
           </v-btn>
         </v-col>
@@ -81,6 +81,11 @@ export default {
       ],
       slides: ["First", "Second", "Third", "Fourth", "Fifth"]
     };
+  },
+  methods: {
+    goToMenu() {
+      this.$router.push('/menu')
+    }
   }
 };
 </script>
