@@ -16,7 +16,7 @@ const getters = {
 
 const actions = {
     setOrdersRef: firestoreAction(context => {
-        return context.bindFirestoreRef('orders', dbOrdersRef)
+        return context.bindFirestoreRef('orders', dbOrdersRef.orderBy('createdAt'))
     }),
     addNewOrder: async (context, order) => {
         try {

@@ -48,18 +48,18 @@
               <th>Price</th>
             </tr>
           </thead>
-          <tbody v-for="(order, index) in orders" :key="index">
+          <tbody v-for="(order, index) in getOrders" :key="order.id">
             <tr class="order_number">
               <th colspan="4">
                 <strong>Order Number: {{ index + 1 }}</strong>
               </th>
               <v-btn x-small color="red">&times;</v-btn>
             </tr>
-            <tr>
-              <td>{{ order.name }}</td>
-              <td>M</td>
-              <td>2</td>
-              <td>45$</td>
+            <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
+              <td>{{ orderItem.name }}</td>
+              <td>{{orderItem.price}}</td>
+              <td>{{orderItem.quantity}}</td>
+              <td>{{orderItem.price}}$</td>
             </tr>
           </tbody>
         </table>
@@ -89,7 +89,7 @@ export default {
           'getMenuItems',
           'numberOfOrders',
           'currentUser',
-          'orders'
+          'getOrders'
       ])
   },
   methods: {
