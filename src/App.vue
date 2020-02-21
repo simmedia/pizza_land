@@ -14,17 +14,19 @@
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
+          id="logo"
           contain
           src="@/assets/images/pizzaLogo.png"
           transition="scale-transition"
           width="120"
+          @click="goToHome"
         />
       </div>
 
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn text>
+        <v-btn to="/menu" text>
           <span class="mr-2">MENU</span>
         </v-btn>
         <v-btn text>
@@ -38,52 +40,58 @@
         </v-btn>
       </v-toolbar-items>
 
-      <v-menu transition="scroll-x-reverse-transition" v-model="value" :close-on-content-click="closeOnContentClick">
+      <v-menu
+        transition="scroll-x-reverse-transition"
+        v-model="value"
+        :close-on-content-click="closeOnContentClick"
+      >
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" text>
             <v-icon>mdi-cart</v-icon>
           </v-btn>
         </template>
-      <v-card
-      class="mx-auto"
-      max-width="400"
-      tile
-    >
-      <v-list
-        :two-line="twoLine"
-        :avatar="avatar"
-      >
-        <v-subheader>
-          <h1 class="title">Cart</h1>
-        </v-subheader>
-        <v-list-item-group v-model="item" color="primary">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-          >
-            <v-list-item-avatar v-if="avatar">
-              <v-img :src="item.avatar"></v-img>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title v-html="item.title"></v-list-item-title>
-              <v-list-item-subtitle v-if="twoLine || threeLine" v-html="item.subtitle"></v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-switch class="pl-4" color="red" v-model="takeOut" label="Take Out" :value="takeOut"></v-switch>
-        </v-list-item-group>
-      </v-list>
-    </v-card>
+        <v-card class="mx-auto" max-width="400" tile>
+          <v-list :two-line="twoLine" :avatar="avatar">
+            <v-subheader>
+              <h1 class="title">Cart</h1>
+            </v-subheader>
+            <v-list-item-group v-model="item" color="primary">
+              <v-list-item v-for="(item, i) in items" :key="i">
+                <v-list-item-avatar v-if="avatar">
+                  <v-img :src="item.avatar"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-html="item.title"></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-if="twoLine || threeLine"
+                    v-html="item.subtitle"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-switch
+                class="pl-4"
+                color="red"
+                v-model="takeOut"
+                label="Take Out"
+                :value="takeOut"
+              ></v-switch>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-menu>
       <v-app-bar-nav-icon
         class="hidden-sm-and-up"
         @click.stop="drawer = !drawer"
       />
     </v-app-bar>
+
+    <!-- content -->
+
     <v-content>
       <v-container class="appContainer" fluid>
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
-      </transition>
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </v-container>
     </v-content>
   </v-app>
@@ -101,36 +109,22 @@ export default {
     takeOut: false,
     closeOnContentClick: false,
     item: 5,
-      items: [
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-          subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?",
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-        },
-      ],
-      twoLine: true,
-      avatar: true,
-  })
+    items: [
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        title: "Brunch this weekend?",
+        subtitle:
+          "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+      }
+    ],
+    twoLine: true,
+    avatar: true
+  }),
+  methods: {
+    goToHome() {
+      this.$router.push('/')
+    }
+  }
 };
 </script>
 
@@ -148,6 +142,10 @@ export default {
 .v-app-bar,
 .v-toolbar__content {
   height: 75px !important;
+
+  #logo {
+    cursor: pointer;
+  }
 }
 
 .bg {
