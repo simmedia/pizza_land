@@ -72,14 +72,17 @@
               <span>{{ item.size }}</span>
               <span>{{ (item.price * item.quantity).toFixed(2) }}</span>
               <span
-                ><v-btn @click="removefromBasket(item)" class="red white--text" x-small
+                ><v-btn
+                  @click="removefromBasket(item)"
+                  class="red white--text"
+                  x-small
                   >&times;</v-btn
                 ></span
               >
             </v-list-item>
 
             <v-list-item class="mt-5">
-              Total: <span class="ma-2 title">{{ getTotal.toFixed(2)}}$</span>
+              Total: <span class="ma-2 title">{{ getTotal.toFixed(2) }}$</span>
             </v-list-item>
 
             <!-- <span class="ml-4 body-1 total"
@@ -93,12 +96,16 @@
               label="Take Out"
               :value="takeOut"
             ></v-switch>
-            <v-btn @click="addNewOrder" small class="mt-5 ml-4 green lighten-2 white--text">Checkout</v-btn>
+            <v-btn
+              @click="addNewOrder"
+              small
+              class="mt-5 ml-4 green lighten-2 white--text"
+              >Checkout</v-btn
+            >
           </div>
-          
-        <span class="body-1 ml-4" v-else>{{ basketText }}</span>
-        </v-list>
 
+          <span class="body-1 ml-4" v-else>{{ basketText }}</span>
+        </v-list>
       </v-navigation-drawer>
 
       <v-btn @click.stop="drawerRight = !drawerRight" text>
@@ -153,7 +160,6 @@ export default {
         createdAt: new Date(),
         total: this.getTotal
       };
-      // this.$store.commit('addOrder', this.basket)
       this.$store.dispatch("addNewOrder", order);
       this.$store.commit("clearBasket");
       this.basketText = "Thank your, your order has been placed!";

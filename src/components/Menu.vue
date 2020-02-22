@@ -29,45 +29,41 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="4">
-        </v-col>
+        <v-col cols="4"> </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   name: "menuItems",
   data() {
     return {
-      
       basket: []
     };
   },
   computed: {
-      ...mapGetters([
-          'getMenuItems'
-      ])
+    ...mapGetters(["getMenuItems", "getBasketItems"])
   },
   methods: {
     async addToBasket(item, option) {
-      const pizzaExist = await this.basket.find(
+      const pizzaExist = await this.getBasketItems.find(
         pizza => pizza.name === item.name && pizza.size === option.size
       );
       if (pizzaExist) {
         pizzaExist.quantity++;
         return;
       }
-      this.basket.push({
+      this.getBasketItems.push({
         name: item.name,
         price: option.price,
         size: option.size,
         quantity: 1
       });
-      this.$store.commit('addToBasket', this.basket)
-    },
+      this.$store.commit("addToBasket", this.getBasketItems);
+    }
   }
 };
 </script>
@@ -109,7 +105,6 @@ export default {
     }
   }
 }
-
 
 @media screen and (max-width: 600px) {
   .menuItems {

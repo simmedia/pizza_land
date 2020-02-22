@@ -46,17 +46,16 @@ const router = new VueRouter({
   mode: 'history',
   routes,
   scrollBehavior(to, from, savedPos) {
-    if(to.hash) {
+    if (to.hash) {
       return savedPos
     } else {
-      return { x: 0, y: 0}
+      return { x: 0, y: 0 }
     }
   }
 
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('nav triggered')
   next()
 })
 
