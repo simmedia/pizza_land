@@ -1,11 +1,11 @@
 <template>
   <div class="admin_wrapper mt-10">
     <v-container class="mt-12" v-if="!currentUser">
-        <v-row class="mt-12" justify="center" align="center">
-            <v-col cols="4">
-                <Login />
-            </v-col>
-        </v-row>
+      <v-row class="mt-12" justify="center" align="center">
+        <v-col cols="4">
+          <Login />
+        </v-col>
+      </v-row>
     </v-container>
     <v-container v-else class="mt-10">
       <div class="current_user">
@@ -31,7 +31,9 @@
             <tr>
               <td>{{ item.name }}</td>
               <td>
-                <v-btn x-small color="red">&times;</v-btn>
+                <v-btn @click="removeMenuItem(item.id)" x-small color="red"
+                  >&times;</v-btn
+                >
               </td>
             </tr>
           </tbody>
@@ -53,13 +55,15 @@
               <th colspan="4">
                 <strong>Order Number: {{ index + 1 }}</strong>
               </th>
-              <v-btn x-small color="red">&times;</v-btn>
+              <v-btn @click="removeOrder(order.id)" x-small color="red"
+                >&times;</v-btn
+              >
             </tr>
             <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
               <td>{{ orderItem.name }}</td>
-              <td>{{orderItem.price}}</td>
-              <td>{{orderItem.quantity}}</td>
-              <td>{{orderItem.price}}$</td>
+              <td>{{ orderItem.price }}</td>
+              <td>{{ orderItem.quantity }}</td>
+              <td>{{ orderItem.price }}$</td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +75,7 @@
 <script>
 import NewPizza from "./NewPizza";
 import Login from "./Login";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "Admin",
@@ -85,16 +89,22 @@ export default {
     };
   },
   computed: {
-      ...mapGetters([
-          'getMenuItems',
-          'numberOfOrders',
-          'currentUser',
-          'getOrders'
-      ])
+    ...mapGetters([
+      "getMenuItems",
+      "numberOfOrders",
+      "currentUser",
+      "getOrders"
+    ])
   },
   methods: {
     SignOut() {
       this.$store.dispatch("signOut");
+    },
+    removeMenuItem(id) {
+      this.$store.dispatch("removeMenuItem", id);
+    },
+    removeOrder(id) {
+      this.$store.dispatch("removeOrder", id);
     }
   }
 };

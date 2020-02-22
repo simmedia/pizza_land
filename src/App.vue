@@ -39,45 +39,73 @@
         </v-btn>
       </v-toolbar-items>
 
-      <v-menu
-        transition="scroll-x-reverse-transition"
-        v-model="value"
-        :close-on-content-click="closeOnContentClick"
+      <!-- BASKET -->
+
+      <v-navigation-drawer
+        v-model="drawerRight"
+        class="cartDrawer"
+        height="500px"
+        width="400px"
+        fixed
+        light
+        hide-overlay
+        app
+        temporary
+        right
       >
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" text>
-            <v-icon>mdi-cart</v-icon>
-          </v-btn>
-        </template>
-        <v-card class="mx-auto" max-width="400" tile>
-          <v-list :two-line="twoLine" :avatar="avatar">
-            <v-subheader>
-              <h1 class="title">Cart</h1>
-            </v-subheader>
-            <v-list-item-group v-model="item" color="primary">
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-avatar v-if="avatar">
-                  <v-img :src="item.avatar"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title v-html="item.title"></v-list-item-title>
-                  <v-list-item-subtitle
-                    v-if="twoLine || threeLine"
-                    v-html="item.subtitle"
-                  ></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-switch
-                class="pl-4"
-                color="red"
-                v-model="takeOut"
-                label="Take Out"
-                :value="takeOut"
-              ></v-switch>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-menu>
+        <v-subheader class="headline mb-5">
+          Cart
+        </v-subheader>
+        <v-list>
+          <div class="basket-list" v-if="this.basket.length > 0">
+            <v-list-item
+              class="basket-item"
+              v-for="(item, index) in basket"
+              :key="index"
+            >
+              <span>
+                <v-btn @click="decreaseQuantity(item)" x-small fab>-</v-btn>
+                <span class="pa-2">{{ item.quantity }}</span>
+                <v-btn @click="increaseQuantity(item)" x-small fab>+</v-btn>
+              </span>
+              <span>{{ item.name }}</span>
+              <span>{{ item.size }}</span>
+              <span>{{ (item.price * item.quantity).toFixed(2) }}</span>
+              <span
+                ><v-btn @click="removefromBasket(item)" class="red white--text" x-small
+                  >&times;</v-btn
+                ></span
+              >
+            </v-list-item>
+
+            <v-list-item class="mt-5">
+              Total: <span class="ma-2 title">{{ getTotal.toFixed(2)}}$</span>
+            </v-list-item>
+
+            <!-- <span class="ml-4 body-1 total"
+              >Total: <span>{{ getTotal.toFixed(2) }}</span
+              >$</span
+            > -->
+            <v-switch
+              class="mt-5 ml-4"
+              color="red"
+              v-model="takeOut"
+              label="Take Out"
+              :value="takeOut"
+            ></v-switch>
+            <v-btn @click="addNewOrder" small class="mt-5 ml-4 green lighten-2 white--text">Checkout</v-btn>
+          </div>
+          
+        <span class="body-1 ml-4" v-else>{{ basketText }}</span>
+        </v-list>
+
+      </v-navigation-drawer>
+
+      <v-btn @click.stop="drawerRight = !drawerRight" text>
+        <v-icon>mdi-cart</v-icon>
+        <span>{{ getTotalQuantity }}</span>
+      </v-btn>
+
       <v-app-bar-nav-icon
         class="hidden-sm-and-up"
         @click.stop="drawer = !drawer"
@@ -111,24 +139,53 @@ export default {
 
   data: () => ({
     drawer: false,
-    value: false,
+    drawerRight: true,
     takeOut: false,
-    closeOnContentClick: false,
-    item: 5,
-    items: [
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-        title: "Brunch this weekend?",
-        subtitle:
-          "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-      }
-    ],
-    twoLine: true,
-    avatar: true
+    basketText: "Your basket is emtpty"
   }),
   methods: {
     goToHome() {
       this.$router.push("/");
+    },
+    addNewOrder() {
+      const order = {
+        pizzas: { ...this.basket },
+        createdAt: new Date(),
+        total: this.getTotal
+      };
+      // this.$store.commit('addOrder', this.basket)
+      this.$store.dispatch("addNewOrder", order);
+      this.$store.commit("clearBasket");
+      this.basketText = "Thank your, your order has been placed!";
+    },
+    removefromBasket(item) {
+      this.basket.splice(this.basket.indexOf(item), 1);
+    },
+    increaseQuantity(item) {
+      item.quantity++;
+    },
+    decreaseQuantity(item) {
+      item.quantity--;
+      if (item.quantity === 0) {
+        this.removefromBasket(item);
+      }
+    }
+  },
+  computed: {
+    basket() {
+      return this.$store.getters.getBasketItems;
+    },
+    getTotalQuantity() {
+      return this.basket.reduce((acc, item) => {
+        acc += item.quantity;
+        return acc;
+      }, 0);
+    },
+    getTotal() {
+      return this.basket.reduce((acc, item) => {
+        acc += item.price * item.quantity;
+        return acc;
+      }, 0);
     }
   }
 };
@@ -154,6 +211,10 @@ export default {
   }
 }
 
+.total {
+  font-size: 20px;
+}
+
 .bg {
   width: 100%;
   height: 100vh;
@@ -161,5 +222,16 @@ export default {
   top: 0;
   left: 0;
   background: url("assets/images/pizza_logo.png") repeat center center;
+}
+
+.basket-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 600px) {
+  .cartDrawer {
+    width: 85% !important;
+  }
 }
 </style>

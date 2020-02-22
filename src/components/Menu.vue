@@ -30,31 +30,6 @@
           </div>
         </v-col>
         <v-col cols="4">
-          <div v-if="basket.length > 0">
-            <div
-              v-for="(item, index) in basket"
-              :key="index"
-              class="mb-3 basketItem"
-            >
-              <div>
-                <v-btn @click="decreaseQuantity(item)" fab x-small>-</v-btn>
-                <span class="pa-2">{{ item.quantity }}</span>
-                <v-btn @click="increaseQuantity(item)" fab x-small>+</v-btn>
-              </div>
-              <span class="">{{ item.name }}</span>
-              <div style="width: 70px;">
-                <span class="mr-5">{{ item.size }}</span>
-                <span style="text-align: right"
-                  >{{ item.price * item.quantity }}$</span
-                >
-              </div>
-            </div>
-            <span class="total">Total: <span>248</span>$</span> <br />
-            <v-btn @click="addNewOrder" class="mt-5 primary">Order</v-btn>
-          </div>
-          <div v-else>
-            {{ basketText }}
-          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -67,7 +42,7 @@ export default {
   name: "menuItems",
   data() {
     return {
-      basketText: "Your basket is emtpty",
+      
       basket: []
     };
   },
@@ -91,31 +66,8 @@ export default {
         size: option.size,
         quantity: 1
       });
-      console.log(this.basket);
+      this.$store.commit('addToBasket', this.basket)
     },
-    removefromBasket(item) {
-      this.basket.splice(this.basket.indexOf(item), 1);
-    },
-    increaseQuantity(item) {
-      item.quantity++;
-    },
-    decreaseQuantity(item) {
-      item.quantity--;
-      if (item.quantity === 0) {
-        this.removefromBasket(item);
-      }
-    },
-    addNewOrder() {
-        const order = {
-            pizzas: {...this.basket},
-            createdAt: new Date(),
-
-        }
-        // this.$store.commit('addOrder', this.basket)
-        this.$store.dispatch('addNewOrder', order)
-        this.basket = []
-        this.basketText = 'Thank your, your order has been placed!'
-    }
   }
 };
 </script>
@@ -157,16 +109,7 @@ export default {
     }
   }
 }
-.basketItem {
-  text-align: right;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
 
-.total {
-  font-size: 20px;
-}
 
 @media screen and (max-width: 600px) {
   .menuItems {

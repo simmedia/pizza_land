@@ -25,6 +25,15 @@ const actions = {
         catch (error) {
             alert('im sorry, there was a problem placing your orders, try again!')
         }
+    },
+    removeOrder: async(context, id) => {
+        try {
+            const order = await dbOrdersRef.doc(id)
+            order.delete()
+        }
+        catch (error) {
+            alert(`There was an error deleting order, ${error}`)
+        }
     }
 }
 
