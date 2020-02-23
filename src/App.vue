@@ -146,7 +146,7 @@ export default {
 
   data: () => ({
     drawer: false,
-    drawerRight: true,
+    drawerRight: false,
     takeOut: false,
     basketText: "Your basket is emtpty"
   }),

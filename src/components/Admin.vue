@@ -1,11 +1,7 @@
 <template>
   <div class="admin_wrapper mt-10">
     <v-container class="mt-12" v-if="!currentUser">
-      <v-row class="mt-12" justify="center" align="center">
-        <v-col cols="4">
           <Login />
-        </v-col>
-      </v-row>
     </v-container>
     <v-container v-else class="mt-10">
       <div class="current_user">

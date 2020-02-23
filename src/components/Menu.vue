@@ -1,9 +1,8 @@
 <template>
   <div class="menu_wrapper">
     <v-container class="mt-10">
-      <v-row justify="center" class="mt-10">
-        <v-col class="menuItems" cols="8">
-          <div v-for="item in getMenuItems" :key="item.name" class="pizza">
+      <v-row justify="center" wrap class="mt-10">
+          <v-col cols="4" v-for="item in getMenuItems" :key="item.name" class="pizza">
             <div id="img">
               <img :src="item.tumb" width="100%" alt="" />
             </div>
@@ -27,9 +26,7 @@
                 >
               </span>
             </div>
-          </div>
         </v-col>
-        <v-col cols="4"> </v-col>
       </v-row>
     </v-container>
   </div>
