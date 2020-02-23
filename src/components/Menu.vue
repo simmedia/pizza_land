@@ -2,7 +2,7 @@
   <div class="menu_wrapper">
     <v-container class="mt-10">
       <v-row justify="center" wrap class="mt-10">
-          <v-col cols="4" v-for="item in getMenuItems" :key="item.name" class="pizza">
+          <v-col cols="10" sm="4" v-for="item in getMenuItems" :key="item.name" class="pizza">
             <div id="img">
               <img :src="item.tumb" width="100%" alt="" />
             </div>
