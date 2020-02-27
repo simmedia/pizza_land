@@ -1,124 +1,140 @@
 <template>
   <v-app>
     <span class="bg"></span>
-    <v-navigation-drawer temporary v-model="drawer" app>
-      <v-list dense>
-        <v-list-item router style="cursor: pointer">
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-btn router to="/menu" text block>Menu</v-btn>
+    <v-navigation-drawer v-model="drawer" fixed temporary>
+      <v-list nav dense>
+        <v-list-item-group active-class="red--text text--accent-4">
+          <v-list-item>
+            <v-list-item-title @click="goTo('/')">
+              <span class="body-1">Home</span>
             </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title @click="goTo('/menu')">
+              <span class="body-1">Menu</span>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title @click="goTo('/about')">
+              <span class="body-1">About Us</span>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title @click="goTo('/contact')">
+              <span class="body-1">Contact</span>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="green lighten-1" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          id="logo"
-          contain
-          src="@/assets/images/pizzaLogo.png"
-          transition="scale-transition"
-          width="120"
-          @click="goToHome"
-        />
-      </div>
+    <v-container>
+      <v-app-bar app color="green lighten-1" dark>
+        <div class="d-flex align-center">
+          <v-img
+            alt="Vuetify Logo"
+            id="logo"
+            contain
+            src="@/assets/images/pizzaLogo.png"
+            transition="scale-transition"
+            width="120"
+            @click="goTo('/')"
+          />
+        </div>
 
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn to="/menu" text>
-          <span class="mr-2">MENU</span>
-        </v-btn>
-        <v-btn to="/about" text>
-          <span class="mr-2">ABOUT US</span>
-        </v-btn>
-        <v-btn to="/contact" text>
-          <span class="mr-2">CONTACT</span>
-        </v-btn>
-      </v-toolbar-items>
+        <v-toolbar-items class="hidden-xs-only">
+          <v-btn to="/menu" text>
+            <span class="mr-2">MENU</span>
+          </v-btn>
+          <v-btn to="/about" text>
+            <span class="mr-2">ABOUT US</span>
+          </v-btn>
+          <v-btn to="/contact" text>
+            <span class="mr-2">CONTACT</span>
+          </v-btn>
+        </v-toolbar-items>
 
-      <!-- BASKET -->
+        <!-- BASKET -->
 
-      <v-navigation-drawer
-        v-model="drawerRight"
-        class="cartDrawer"
-        height="500px"
-        width="400px"
-        fixed
-        light
-        hide-overlay
-        app
-        temporary
-        right
-      >
-        <v-subheader class="headline mb-5">
-          Cart
-        </v-subheader>
-        <v-list>
-          <div class="basket-list" v-if="this.basket.length > 0">
-            <v-list-item
-              class="basket-item"
-              v-for="(item, index) in basket"
-              :key="index"
-            >
-              <span>
-                <v-btn @click="decreaseQuantity(item)" x-small fab>-</v-btn>
-                <span class="pa-2">{{ item.quantity }}</span>
-                <v-btn @click="increaseQuantity(item)" x-small fab>+</v-btn>
-              </span>
-              <span>{{ item.name }}</span>
-              <span>{{ item.size }}</span>
-              <span>{{ (item.price * item.quantity).toFixed(2) }}</span>
-              <span
-                ><v-btn
-                  @click="removefromBasket(item)"
-                  class="red white--text"
-                  x-small
-                  >&times;</v-btn
-                ></span
+        <v-navigation-drawer
+          v-model="drawerRight"
+          class="cartDrawer"
+          height="500px"
+          width="400px"
+          fixed
+          light
+          hide-overlay
+          app
+          temporary
+          right
+        >
+          <v-subheader class="headline my-5">
+            Cart
+          </v-subheader>
+          <v-list>
+            <div class="basket-list" v-if="this.basket.length > 0">
+              <v-list-item
+                class="basket-item"
+                v-for="(item, index) in basket"
+                :key="index"
               >
-            </v-list-item>
+                <span>
+                  <v-btn @click="decreaseQuantity(item)" x-small fab>-</v-btn>
+                  <span class="pa-2">{{ item.quantity }}</span>
+                  <v-btn @click="increaseQuantity(item)" x-small fab>+</v-btn>
+                </span>
+                <span>{{ item.name }}</span>
+                <span>{{ item.size }}</span>
+                <span>{{ (item.price * item.quantity).toFixed(2) }}</span>
+                <span
+                  ><v-btn
+                    @click="removefromBasket(item)"
+                    class="red white--text"
+                    x-small
+                    >&times;</v-btn
+                  ></span
+                >
+              </v-list-item>
 
-            <v-list-item class="mt-5">
-              Total: <span class="ma-2 title">{{ getTotal.toFixed(2) }}$</span>
-            </v-list-item>
+              <v-list-item class="mt-5">
+                Total:
+                <span class="ma-2 title">{{ getTotal.toFixed(2) }}$</span>
+              </v-list-item>
 
-            <!-- <span class="ml-4 body-1 total"
-              >Total: <span>{{ getTotal.toFixed(2) }}</span
-              >$</span
-            > -->
-            <v-switch
-              class="mt-5 ml-4"
-              color="red"
-              v-model="takeOut"
-              label="Take Out"
-              :value="takeOut"
-            ></v-switch>
-            <v-btn
-              @click="addNewOrder"
-              small
-              class="mt-5 ml-4 green lighten-2 white--text"
-              >Checkout</v-btn
-            >
-          </div>
+              <v-switch
+                class="mt-5 ml-4"
+                color="red"
+                v-model="takeOut"
+                label="Take Out"
+                :value="takeOut"
+              ></v-switch>
+              <v-btn
+                @click="addNewOrder"
+                small
+                class="mt-5 ml-4 green lighten-2 white--text"
+                >Checkout</v-btn
+              >
+            </div>
 
-          <span class="body-1 ml-4" v-else>{{ basketText }}</span>
-        </v-list>
-      </v-navigation-drawer>
+            <span class="body-1 ml-4" v-else>{{ basketText }}</span>
+          </v-list>
+        </v-navigation-drawer>
 
-      <v-btn @click.stop="drawerRight = !drawerRight" text>
-        <v-icon>mdi-cart</v-icon>
-        <span>{{ getTotalQuantity }}</span>
-      </v-btn>
+        <v-btn @click.stop="drawerRight = !drawerRight" text>
+          <v-icon>mdi-cart</v-icon>
+          <span>{{ getTotalQuantity }}</span>
+        </v-btn>
 
-      <v-app-bar-nav-icon
-        class="hidden-sm-and-up"
-        @click.stop="drawer = !drawer"
-      />
-    </v-app-bar>
-
+        <v-app-bar-nav-icon
+          class="hidden-sm-and-up"
+          @click.stop="drawer = !drawer"
+        />
+      </v-app-bar>
+    </v-container>
     <!-- content -->
 
     <v-content>
@@ -146,13 +162,13 @@ export default {
 
   data: () => ({
     drawer: false,
-    drawerRight: false,
     takeOut: false,
+    drawerRight: false,
     basketText: "Your basket is emtpty"
   }),
   methods: {
-    goToHome() {
-      this.$router.push("/");
+    goTo(path) {
+      this.$router.push(path);
     },
     addNewOrder() {
       const order = {
@@ -200,6 +216,10 @@ export default {
 <style lang="scss">
 .appContainer {
   padding: 0px !important;
+}
+
+.cartDrawer {
+  margin-top: 75px !important;
 }
 .fade-enter-active,
 .fade-leave-active {

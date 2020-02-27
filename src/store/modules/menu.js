@@ -3,17 +3,22 @@ import { dbMenuRef } from '../../firebase'
 
 const state = {
     menuItems: [],
-    basket: []
+    basket: [],
+    basketDrawer: false
 }
 
 const getters = {
     getMenuItems: state => state.menuItems,
-    getBasketItems: state => state.basket
+    getBasketItems: state => state.basket,
+    getBasketDrawer: state => state.basketDrawer
 }
 
 const mutations = {
     addToBasket(state,payload) {
         state.basket = payload
+    },
+    toggleBasket(state,payload) {
+        state.basketDrawer = payload
     },
     clearBasket(state) {
         state.basket = []

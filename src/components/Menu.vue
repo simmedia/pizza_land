@@ -2,8 +2,51 @@
   <div class="menu_wrapper">
     <v-container class="mt-10">
       <v-row justify="center" wrap class="mt-10">
-          <v-col cols="10" sm="4" v-for="item in getMenuItems" :key="item.name" class="pizza">
-            <div id="img">
+        <v-col
+          cols="10"
+          sm="4"
+          v-for="item in getMenuItems"
+          :key="item.name"
+          class="pizza"
+        >
+          <v-card max-width="320">
+            <v-img height="250" cover :src="item.tumb"></v-img>
+            <v-card-title>{{ item.name }}</v-card-title>
+
+            <v-card-text>
+              <v-row align="center" class="mx-0"> </v-row>
+
+              <div>{{ item.description }}</div>
+            </v-card-text>
+
+            <v-divider class="mx-4"></v-divider>
+
+            <v-card-text>
+              <v-row>
+                <v-col
+                  class="d-flex flex-column"
+                  v-for="(option, index) in item.options"
+                  :key="index"
+                >
+                  <span class="subtitle-1 mr-3 mb-3"
+                    ><span class="body-1">size: </span> {{ option.size }}</span
+                  >
+                  <span class="headline mb-2">{{ option.price }}$</span>
+                  <v-btn
+                    @click="addToBasket(item, option)"
+                    class="addButton white--text red"
+                    fab
+                    x-small
+                    dark
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+
+          <!-- <div id="img">
               <img :src="item.tumb" width="100%" alt="" />
             </div>
             <span class="title">{{ item.name }}</span>
@@ -25,7 +68,7 @@
                   >add</v-btn
                 >
               </span>
-            </div>
+            </div> -->
         </v-col>
       </v-row>
     </v-container>
@@ -65,50 +108,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.menuItems {
-  display: flex;
-}
-
-.pizza {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: white;
-  margin: 10px;
-  padding: 20px 10px;
-  border-radius: 20px;
-  justify-content: space-between;
-  box-shadow: 4px 4px 20px rgba(black, 0.2);
-
-  height: 400px;
-
-  #img {
-    border-radius: 30px;
-    width: 150px;
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-
-  .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-
-    .addButton {
-      color: white;
-    }
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .menuItems {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-}
-</style>
+<style lang="scss"></style>
