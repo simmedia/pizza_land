@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Menu from '@/components/Menu.vue'
 import Admin from '@/components/Admin.vue'
 import Contact from '../views/Contact.vue'
+import Checkout from '../views/Checkout.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout
   },
 
   {

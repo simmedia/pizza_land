@@ -2,16 +2,21 @@ import { firestoreAction } from 'vuexfire'
 import { dbOrdersRef } from '../../firebase'
 
 const state = {
-    orders: []
+    orders: [],
+    checkoutItem: null
 }
 
 const mutations = {
-    // addOrder: (state, orders) => state.orders.push(orders)
+    
+    checkoutItem(state, payload) {
+        state.checkoutItem = payload
+    }
 }
 
 const getters = {
     getOrders: state => state.orders,
-    numberOfOrders: state => state.orders.length
+    numberOfOrders: state => state.orders.length,
+    checkoutItem: state => state.checkoutItem
 }
 
 const actions = {

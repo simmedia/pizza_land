@@ -1,7 +1,7 @@
 <template>
   <div class="admin_wrapper mt-10">
     <v-container class="mt-12" v-if="!currentUser">
-          <Login />
+      <Login />
     </v-container>
     <v-container v-else class="mt-10">
       <div class="current_user">
@@ -13,9 +13,12 @@
         </span>
         <v-btn small class="ml-3 red" @click.prevent="SignOut">Sign Out</v-btn>
       </div>
-      <NewPizza />
+      <v-row justify="center">
+        <NewPizza />
+      </v-row>
+
       <div class="menu_wrapper">
-        <h3>menu</h3>
+        <h3>Menu</h3>
         <table>
           <thead>
             <tr>
@@ -37,33 +40,62 @@
       </div>
       <div class="orders_wrapper">
         <h3>Current orders ({{ numberOfOrders }})</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Size</th>
-              <th>Quantity</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody v-for="(order, index) in getOrders" :key="order.id">
-            <tr class="order_number">
-              <th colspan="4">
-                <strong>Order Number: {{ index + 1 }}</strong>
-              </th>
-              <v-btn @click="removeOrder(order.id)" x-small color="red"
-                >&times;</v-btn
-              >
-            </tr>
-            <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
-              <td>{{ orderItem.name }}</td>
-              <td>{{ orderItem.price }}</td>
-              <td>{{ orderItem.quantity }}</td>
-              <td>{{ orderItem.price }}$</td>
-            </tr>
-          </tbody>
-        </table>
+
+        <v-expansion-panels accordion popout>
+          <v-expansion-panel
+            v-for="(order, index) in getOrders"
+            :key="order.id"
+          >
+            <v-expansion-panel-header>
+              {{ order.name }} | {{ order.address }} | {{ order.phone }} --
+
+              {{ order.takeOut ? "Delivery" : "Take-out" }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pizza</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="order_number">
+                    <th colspan="4">
+                      <strong>Order Number: {{ index + 1 }}</strong>
+                    </th>
+                    <v-btn @click="removeOrder(order.id)" x-small color="red"
+                      >&times;</v-btn
+                    >
+                  </tr>
+                  <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
+                    <td>{{ orderItem.name }}</td>
+                    <td>{{ orderItem.size }}</td>
+                    <td>{{ orderItem.quantity }}</td>
+                    <td>{{ orderItem.price }}$</td>
+                  </tr>
+                  <th colspan="4">
+                    <strong>TOTAL: {{ order.total }}$</strong>
+                  </th>
+                </tbody>
+              </table>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
+      <v-snackbar :timeout="timeout" v-model="snackbar">
+        {{ text }}
+        <v-btn color="pink" text @click="snackbar = false">
+          Close
+        </v-btn>
+        <audio
+          v-if="snackbar"
+          src="../assets/notification.mp3"
+          autoplay
+        ></audio>
+      </v-snackbar>
     </v-container>
   </div>
 </template>
@@ -77,11 +109,15 @@ export default {
   name: "Admin",
   components: {
     NewPizza,
-    Login
+    Login,
   },
   data() {
     return {
-      name: "Stefan"
+      name: "Stefan",
+      playSound: false,
+      snackbar: false,
+      text: "New Notification",
+      timeout: 1500,
     };
   },
   computed: {
@@ -89,8 +125,9 @@ export default {
       "getMenuItems",
       "numberOfOrders",
       "currentUser",
-      "getOrders"
-    ])
+      "getOrders",
+      "dialog",
+    ]),
   },
   methods: {
     SignOut() {
@@ -101,8 +138,14 @@ export default {
     },
     removeOrder(id) {
       this.$store.dispatch("removeOrder", id);
-    }
-  }
+    },
+  },
+
+  watch: {
+    getOrders() {
+      this.snackbar = true;
+    },
+  },
 };
 </script>
 

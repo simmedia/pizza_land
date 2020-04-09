@@ -104,16 +104,8 @@
                 Total:
                 <span class="ma-2 title">{{ getTotal.toFixed(2) }}$</span>
               </v-list-item>
-
-              <v-switch
-                class="mt-5 ml-4"
-                color="red"
-                v-model="takeOut"
-                label="Take Out"
-                :value="takeOut"
-              ></v-switch>
               <v-btn
-                @click="addNewOrder"
+                @click="checkout"
                 small
                 class="mt-5 ml-4 green lighten-2 white--text"
                 >Checkout</v-btn
@@ -164,22 +156,28 @@ export default {
     drawer: false,
     takeOut: false,
     drawerRight: false,
-    basketText: "Your basket is emtpty"
+    basketText: "Your basket is emtpty",
   }),
   methods: {
     goTo(path) {
       this.$router.push(path);
     },
-    addNewOrder() {
-      const order = {
-        pizzas: { ...this.basket },
-        createdAt: new Date(),
-        total: this.getTotal
-      };
-      this.$store.dispatch("addNewOrder", order);
-      this.$store.commit("clearBasket");
-      this.basketText = "Thank your, your order has been placed!";
+
+    checkout() {
+      this.$router.push('/checkout');
     },
+
+    // addNewOrder() {
+    //   const order = {
+    //     pizzas: { ...this.basket },
+    //     createdAt: new Date(),
+    //     total: this.getTotal
+    //   };
+    //   this.$store.dispatch("addNewOrder", order);
+    //   this.$store.commit("clearBasket");
+    //   this.basketText = "Thank your, your order has been placed!";
+    // },
+
     removefromBasket(item) {
       this.basket.splice(this.basket.indexOf(item), 1);
     },
@@ -191,7 +189,7 @@ export default {
       if (item.quantity === 0) {
         this.removefromBasket(item);
       }
-    }
+    },
   },
   computed: {
     basket() {
@@ -208,8 +206,8 @@ export default {
         acc += item.price * item.quantity;
         return acc;
       }, 0);
-    }
-  }
+    },
+  },
 };
 </script>
 

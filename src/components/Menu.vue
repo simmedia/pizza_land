@@ -45,30 +45,6 @@
               </v-row>
             </v-card-text>
           </v-card>
-
-          <!-- <div id="img">
-              <img :src="item.tumb" width="100%" alt="" />
-            </div>
-            <span class="title">{{ item.name }}</span>
-            <p>{{ item.description }}</p>
-            <div>
-              <span
-                class="options mr-10"
-                v-for="(option, index) in item.options"
-                :key="index"
-              >
-                <span class="subtitle-1 mr-3 mb-3"
-                  ><span class="body-1">size: </span> {{ option.size }}</span
-                >
-                <span class="subtitle-2">{{ option.price }}$</span>
-                <v-btn
-                  @click="addToBasket(item, option)"
-                  small
-                  class="addButton red ml-3"
-                  >add</v-btn
-                >
-              </span>
-            </div> -->
         </v-col>
       </v-row>
     </v-container>
