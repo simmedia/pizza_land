@@ -126,7 +126,6 @@ export default {
       "numberOfOrders",
       "currentUser",
       "getOrders",
-      "dialog",
     ]),
   },
   methods: {

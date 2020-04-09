@@ -19,25 +19,20 @@
               label="Description"
             ></v-textarea>
             <br />
-            <span class="subtitle-1">Option 1</span>
-            <v-text-field v-model="newPizza.options[0].size" label="Size">
-            </v-text-field>
-            <v-text-field
-              v-model="newPizza.options[0].price"
-              type="number"
-              label="Price"
-            >
-            </v-text-field>
-            <span class="subitle-1">Option 2</span>
-            <v-text-field v-model="newPizza.options[1].size" label="Size">
-            </v-text-field>
-            <v-text-field
-              v-model="newPizza.options[1].price"
-              type="number"
-              label="Price"
-            >
-            </v-text-field>
-            
+
+            <div v-for="(option, index) in newPizza.options" :key="index">
+              <span @click="removeOption(option)" class="subtitle-1">Option - {{ index + 1 }}</span>
+              <v-text-field
+                placeholder="Size"
+                v-model="option.size"
+              ></v-text-field>
+              <v-text-field
+                placeholder="Price"
+                type="number"
+                v-model="option.price"
+              ></v-text-field>
+            </div>
+            <v-btn color="green" text fab small @click="addOption"><v-icon>mdi-plus</v-icon></v-btn>
           </form>
         </v-card-text>
 
@@ -48,7 +43,7 @@
             Disagree
           </v-btn>
 
-          <v-btn color="green darken-1" @click="add">
+          <v-btn class="green white--text" @click="add">
             Agree
           </v-btn>
         </v-card-actions>
@@ -70,24 +65,27 @@ export default {
         description:
           "Eg. A delicious tomato based pizza topped with mozzarella",
         tumb: require("../assets/images/Menu/margarita.jpg"),
-        options: [
-          {
-            size: "M",
-            price: 6.95,
-          },
-          {
-            size: "L",
-            price: 10.95,
-          },
-        ],
+        options: [],
       },
     };
   },
   methods: {
     add() {
       dbMenuRef.add(this.newPizza);
-      this.dialog = false
+      this.dialog = false;
     },
+    addOption() {
+      this.newPizza.options.push({
+        size: "",
+        price: Number,
+      });
+    },
+    removeOption(i) {
+      const item = this.newPizza.options.indexOf(i)
+      this.newPizza.options.splice(item,1)
+      
+      
+    }
   },
 };
 </script>
