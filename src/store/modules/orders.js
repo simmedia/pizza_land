@@ -4,14 +4,9 @@ import { dbOrdersRef } from '../../firebase'
 const state = {
     orders: [],
     checkoutItem: null,
-    notification: ''
 }
 
 const mutations = {
-    notification(state, payload) {
-        state.notification = payload
-    },
-    
     checkoutItem(state, payload) {
         state.checkoutItem = payload
     }
@@ -20,8 +15,7 @@ const mutations = {
 const getters = {
     getOrders: state => state.orders,
     numberOfOrders: state => state.orders.length,
-    checkoutItem: state => state.checkoutItem,
-    notification: state => state.notification
+    checkoutItem: state => state.checkoutItem
 }
 
 const actions = {

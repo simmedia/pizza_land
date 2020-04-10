@@ -57,7 +57,15 @@
                       <th class="text-left">Size</th>
                       <th class="text-left">Quantity</th>
                       <th class="text-left">Price</th>
-                      <th class="text-left">Remove</th>
+                      <th class="text-left">
+                        <v-btn
+                          @click="removeOrder(order.id)"
+                          x-small
+                          fab
+                          class="red white--text"
+                          ><v-icon>mdi-delete</v-icon></v-btn
+                        >
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,15 +74,6 @@
                       <td class="text-left">{{ orderItem.size }}</td>
                       <td class="text-left">{{ orderItem.quantity }}</td>
                       <td class="text-left">{{ orderItem.price }}$</td>
-                      <td>
-                        <v-btn
-                          @click="removeOrder(order.id)"
-                          x-small
-                          fab
-                          class="red white--text"
-                          ><v-icon>mdi-delete</v-icon></v-btn
-                        >
-                      </td>
                     </tr>
                   </tbody>
                 </template>
@@ -124,7 +123,7 @@ export default {
       "numberOfOrders",
       "currentUser",
       "getOrders",
-      "notification"
+      "orderSent",
     ]),
   },
   methods: {
@@ -136,33 +135,12 @@ export default {
     },
     removeOrder(id) {
       this.$store.dispatch("removeOrder", id);
-      this.$store.commit("notification", "Order deleted!");
     },
   },
 
   watch: {
-    notification(val) {
-       if (val === 'Order deleted!') {
-        this.snackbar = true
-        this.text = "Order Deleted"
-      }  else {
-        this.snackbar = true
-        this.text = "New Order received!"
-      }
-      
-    },
-    getOrders(val) {
-      // console.log(val);
-      if (val > this.getOrders.length) {
-        console.log(true);
-
-        // this.snackbar = true
-        // this.text = "Order Deleted"
-      }
-      // else {
-      //   this.snackbar = true
-      //   this.text = "New Order received!"
-      // }
+    getOrders() {
+      (this.snackbar = true), (this.text = "Orders has been updated!");
     },
   },
 };

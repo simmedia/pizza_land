@@ -103,15 +103,11 @@ export default {
         total: this.getTotal,
       };
       this.$store.dispatch("addNewOrder", order);
-      this.$store.commit('notification', 'Order has been sent!')
       this.$store.commit("clearBasket");
       this.orderDelivered = true;
     },
     deliveryInfo() {
-      (this.orderDelivered = true),
-        setTimeout(() => {
-          this.orderDelivered = false;
-        }, 2000);
+      this.orderDelivered = true;
     },
   },
 

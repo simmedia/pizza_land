@@ -83,7 +83,7 @@ export default {
     removeOption(i) {
       const item = this.newPizza.options.indexOf(i)
       this.newPizza.options.splice(item,1)
-      
+  
       
     }
   },

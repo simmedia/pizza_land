@@ -136,6 +136,8 @@
         </transition>
       </v-container>
     </v-content>
+
+    <vue-progress-bar></vue-progress-bar>
   </v-app>
 </template>
 
@@ -150,13 +152,22 @@ export default {
   created() {
     this.$store.dispatch("setMenuRef", dbMenuRef);
     this.$store.dispatch("setOrdersRef", dbOrdersRef);
+
+    this.$Progress.start();
+    this.$router.beforeEach((to, from, next) => {
+      this.$Progress.start();
+      next();
+    });
+    this.$router.afterEach(() => {
+      this.$Progress.finish();
+    });
   },
 
   data: () => ({
     drawer: false,
     takeOut: false,
     drawerRight: false,
-    basketText: "Your basket is emtpty",
+    basketText: "Your basket is emtpty"
   }),
   methods: {
     goTo(path) {
@@ -164,7 +175,7 @@ export default {
     },
 
     checkout() {
-      this.$router.push('/checkout');
+      this.$router.push("/checkout");
     },
 
     // addNewOrder() {
@@ -189,7 +200,7 @@ export default {
       if (item.quantity === 0) {
         this.removefromBasket(item);
       }
-    },
+    }
   },
   computed: {
     basket() {
@@ -206,8 +217,8 @@ export default {
         acc += item.price * item.quantity;
         return acc;
       }, 0);
-    },
-  },
+    }
+  }
 };
 </script>
 
