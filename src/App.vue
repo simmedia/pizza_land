@@ -152,8 +152,6 @@ export default {
   created() {
     this.$store.dispatch("setMenuRef", dbMenuRef);
     this.$store.dispatch("setOrdersRef", dbOrdersRef);
-
-    this.$Progress.start();
     this.$router.beforeEach((to, from, next) => {
       this.$Progress.start();
       next();

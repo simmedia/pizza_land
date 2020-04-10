@@ -38,7 +38,7 @@
           </tbody>
         </table>
       </div>
-      <v-card class="orders_wrapper">
+      <v-card class="mt-5 pa-5 orders_wrapper">
         <v-card-title>Current orders ({{ numberOfOrders }})</v-card-title>
 
         <v-expansion-panels accordion popout>
@@ -46,7 +46,7 @@
             <v-expansion-panel-header>
               {{ order.name }} | {{ order.address }} | {{ order.phone }} --
 
-              {{ order.takeOut ? "Delivery" : "Take-out" }}
+              {{ order.takeOut ? "Take-out" : "Delivery" }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-simple-table fixed-header>
@@ -122,8 +122,7 @@ export default {
       "getMenuItems",
       "numberOfOrders",
       "currentUser",
-      "getOrders",
-      "orderSent",
+      "getOrders"
     ]),
   },
   methods: {

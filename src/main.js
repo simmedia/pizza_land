@@ -7,13 +7,13 @@ import vuetify from './plugins/vuetify';
 import VueProgressBar from 'vue-progressbar'
 
 const options = {
-  color: '#444',
+  color: '#F44437',
   failedColor: '#874b4b',
   thickness: '7px',
   transition: {
     speed: '0.3s',
     opacity: '0.6s',
-    termination: 300
+    termination: 600
   },
   autoRevert: true,
   location: 'top',
