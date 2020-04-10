@@ -38,53 +38,51 @@
           </tbody>
         </table>
       </div>
-      <div class="orders_wrapper">
-        <h3>Current orders ({{ numberOfOrders }})</h3>
+      <v-card class="orders_wrapper">
+        <v-card-title>Current orders ({{ numberOfOrders }})</v-card-title>
 
         <v-expansion-panels accordion popout>
-          <v-expansion-panel
-            v-for="(order, index) in getOrders"
-            :key="order.id"
-          >
+          <v-expansion-panel v-for="order in getOrders" :key="order.id">
             <v-expansion-panel-header>
               {{ order.name }} | {{ order.address }} | {{ order.phone }} --
 
               {{ order.takeOut ? "Delivery" : "Take-out" }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Pizza</th>
-                    <th>Size</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="order_number">
-                    <th colspan="4">
-                      <strong>Order Number: {{ index + 1 }}</strong>
-                    </th>
-                    <v-btn @click="removeOrder(order.id)" x-small color="red"
-                      >&times;</v-btn
-                    >
-                  </tr>
-                  <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
-                    <td>{{ orderItem.name }}</td>
-                    <td>{{ orderItem.size }}</td>
-                    <td>{{ orderItem.quantity }}</td>
-                    <td>{{ orderItem.price }}$</td>
-                  </tr>
-                  <th colspan="4">
-                    <strong>TOTAL: {{ order.total }}$</strong>
-                  </th>
-                </tbody>
-              </table>
+              <v-simple-table fixed-header>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">Name</th>
+                      <th class="text-left">Size</th>
+                      <th class="text-left">Quantity</th>
+                      <th class="text-left">Price</th>
+                      <th class="text-left">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="orderItem in order.pizzas" :key="orderItem.id">
+                      <td class="text-left">{{ orderItem.name }}</td>
+                      <td class="text-left">{{ orderItem.size }}</td>
+                      <td class="text-left">{{ orderItem.quantity }}</td>
+                      <td class="text-left">{{ orderItem.price }}$</td>
+                      <td>
+                        <v-btn
+                          @click="removeOrder(order.id)"
+                          x-small
+                          fab
+                          class="red white--text"
+                          ><v-icon>mdi-delete</v-icon></v-btn
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-      </div>
+      </v-card>
       <v-snackbar :timeout="timeout" v-model="snackbar">
         {{ text }}
         <v-btn color="pink" text @click="snackbar = false">
@@ -126,6 +124,7 @@ export default {
       "numberOfOrders",
       "currentUser",
       "getOrders",
+      "notification"
     ]),
   },
   methods: {
@@ -137,12 +136,33 @@ export default {
     },
     removeOrder(id) {
       this.$store.dispatch("removeOrder", id);
+      this.$store.commit("notification", "Order deleted!");
     },
   },
 
   watch: {
-    getOrders() {
-      this.snackbar = true;
+    notification(val) {
+       if (val === 'Order deleted!') {
+        this.snackbar = true
+        this.text = "Order Deleted"
+      }  else {
+        this.snackbar = true
+        this.text = "New Order received!"
+      }
+      
+    },
+    getOrders(val) {
+      // console.log(val);
+      if (val > this.getOrders.length) {
+        console.log(true);
+
+        // this.snackbar = true
+        // this.text = "Order Deleted"
+      }
+      // else {
+      //   this.snackbar = true
+      //   this.text = "New Order received!"
+      // }
     },
   },
 };
@@ -151,27 +171,5 @@ export default {
 <style lang="scss" scoped>
 .admin_wrapper {
   margin: 10px;
-}
-
-.curren_user,
-.orders_wrapper,
-.menu_wrapper {
-  margin: 10px 0;
-  padding: 10px;
-  border: solid 1px green;
-}
-
-table {
-  text-align: left;
-  width: 70vw;
-}
-
-.order_number {
-  background: #ddd;
-}
-
-.btn_red {
-  background: red;
-  padding: 10px;
 }
 </style>
