@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import VueProgressBar from 'vue-progressbar'
+ 
 
 const options = {
   color: '#F44437',
@@ -19,6 +20,7 @@ const options = {
   location: 'top',
   inverse: false
 }
+
 
 Vue.use(VueProgressBar, options)
 

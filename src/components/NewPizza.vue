@@ -18,10 +18,18 @@
               v-model="newPizza.description"
               label="Description"
             ></v-textarea>
+            <input
+              type="file"
+              accept="image/*"
+              @change="onFilePicked"
+              label="File input"
+            />
             <br />
 
             <div v-for="(option, index) in newPizza.options" :key="index">
-              <span @click="removeOption(option)" class="subtitle-1">Option - {{ index + 1 }}</span>
+              <span @click="removeOption(option)" class="subtitle-1"
+                >Option - {{ index + 1 }}</span
+              >
               <v-text-field
                 placeholder="Size"
                 v-model="option.size"
@@ -32,7 +40,9 @@
                 v-model="option.price"
               ></v-text-field>
             </div>
-            <v-btn color="green" text fab small @click="addOption"><v-icon>mdi-plus</v-icon></v-btn>
+            <v-btn color="green" text fab small @click="addOption"
+              ><v-icon>mdi-plus</v-icon></v-btn
+            >
           </form>
         </v-card-text>
 
@@ -61,10 +71,10 @@ export default {
     return {
       dialog: false,
       newPizza: {
-        name: "Eg. Margherita",
-        description:
-          "Eg. A delicious tomato based pizza topped with mozzarella",
-        tumb: require("../assets/images/Menu/margarita.jpg"),
+        name: "",
+        description: "",
+        tumb: "",
+        imageFile: "",
         options: [],
       },
     };
@@ -74,6 +84,20 @@ export default {
       dbMenuRef.add(this.newPizza);
       this.dialog = false;
     },
+    onFilePicked(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.newPizza.tumb = fr.result;
+          // this.newPizza.imageFile = files[0];
+        });
+      } else {
+        // this.steps.imageFile = "";
+        this.steps.tumb = "";
+      }
+    },
     addOption() {
       this.newPizza.options.push({
         size: "",
@@ -81,11 +105,9 @@ export default {
       });
     },
     removeOption(i) {
-      const item = this.newPizza.options.indexOf(i)
-      this.newPizza.options.splice(item,1)
-  
-      
-    }
+      const item = this.newPizza.options.indexOf(i);
+      this.newPizza.options.splice(item, 1);
+    },
   },
 };
 </script>
