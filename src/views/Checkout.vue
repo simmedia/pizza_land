@@ -2,13 +2,13 @@
   <v-container>
     <div v-if="basket.length">
       <v-row>
-        <v-col>
-          Your order :
+        <v-col cols="10" md="6">
+          <span class="d-block title mb-10">Your order</span> :
           {{ basket }}
           <hr />
         </v-col>
-        <v-col>
-          Your info:
+        <v-col cols="10" md="6">
+          <span class="d-block title mb-10">Your info</span> :
           <v-form v-model="valid">
             <v-text-field
               v-model="name"
@@ -52,11 +52,18 @@
       </v-row>
     </div>
     <div v-else-if="!orderDelivered">
-      No items for order!
+      <v-row justify="center" class="mt-12">
+        <v-col class="text-center">
+          <span class="headline">No pizza for order!</span>
+        </v-col>
+      </v-row>
     </div>
-    <div v-if="orderDelivered">
-      ORDER HAS BEEN PLACED SUCCESSFULY :D
-    </div>
+    <v-row class="mt-10" justify="center" v-if="orderDelivered">
+      <v-col align="center" cols="10" md="6">
+        <img class="pizza-guy mb-5" src="../assets/images/pizzaguy.png" width="50%">
+      <span style="display:block;" class="display-1 secondary--text">Order has been placed!</span>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -121,4 +128,18 @@ export default {
 
 <style>
 /* style goes here */
+.pizza-guy {
+  transform: translateX(-100px);
+  opacity: 0;
+  animation: slideIn .6s ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  to {
+  transform: translateX(-0px);
+  opacity: 1;
+
+  }
+}
 </style>
