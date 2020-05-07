@@ -3,51 +3,71 @@
     <div v-if="basket.length">
       <v-row>
         <v-col cols="10" md="6">
-          <span class="d-block title mb-10">Your order</span> :
-          {{ basket }}
-          <hr />
+          <span class="d-block title mb-10">Your order:</span>
+         <v-card>
+            <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Name</th>
+                  <th class="text-left">Price</th>
+                  <th class="text-left">Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in basket" :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.price }} $</td>
+                  <td>{{ item.quantity }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+         </v-card>
         </v-col>
         <v-col cols="10" md="6">
-          <span class="d-block title mb-10">Your info</span> :
-          <v-form v-model="valid">
-            <v-text-field
-              v-model="name"
-              label="Full Name"
-              :rules="nameRules"
-              required
-            ></v-text-field>
+          <span class="d-block title mb-10">Delivery Info:</span>
+          <v-card>
+            <v-form class="pa-3" v-model="valid">
+              <v-text-field
+                v-model="name"
+                label="Full Name"
+                :rules="nameRules"
+                required
+              ></v-text-field>
 
-            <v-text-field
-              v-if="!takeOut"
-              v-model="address"
-              label="Address"
-              :rules="addressRules"
-              required
-            ></v-text-field>
+              <v-text-field
+                v-if="!takeOut"
+                v-model="address"
+                label="Address"
+                :rules="addressRules"
+                required
+              ></v-text-field>
 
-            <v-text-field
-              v-model="phone"
-              type="number"
-              label="Phone Number"
-              :rules="phoneRules"
-              required
-            ></v-text-field>
+              <v-text-field
+                v-model="phone"
+                type="number"
+                label="Phone Number"
+                :rules="phoneRules"
+                required
+              ></v-text-field>
 
-            <v-switch
-              class="my-3"
-              color="red"
-              v-model="takeOut"
-              label="Take Out"
-            ></v-switch>
+              <v-switch
+                class="my-3"
+                color="red"
+                v-model="takeOut"
+                label="Take Out"
+              ></v-switch>
 
-            <v-btn
-              class="green white--text"
-              :disabled="!valid"
-              @click="placeOrder"
-            >
-              Place Order
-            </v-btn>
-          </v-form>
+              <v-btn
+                class="green white--text"
+                :disabled="!valid"
+                @click="placeOrder"
+              >
+                Place Order
+              </v-btn>
+            </v-form>
+          </v-card>
         </v-col>
       </v-row>
     </div>
@@ -60,8 +80,14 @@
     </div>
     <v-row class="mt-10" justify="center" v-if="orderDelivered">
       <v-col align="center" cols="10" md="6">
-        <img class="pizza-guy mb-5" src="../assets/images/pizzaguy.png" width="50%">
-      <span style="display:block;" class="display-1 secondary--text">Order has been placed!</span>
+        <img
+          class="pizza-guy mb-5"
+          src="../assets/images/pizzaguy.png"
+          width="50%"
+        />
+        <span style="display:block;" class="display-1 secondary--text"
+          >Order has been placed!</span
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -131,15 +157,14 @@ export default {
 .pizza-guy {
   transform: translateX(-100px);
   opacity: 0;
-  animation: slideIn .6s ease;
+  animation: slideIn 0.6s ease;
   animation-fill-mode: forwards;
 }
 
 @keyframes slideIn {
   to {
-  transform: translateX(-0px);
-  opacity: 1;
-
+    transform: translateX(-0px);
+    opacity: 1;
   }
 }
 </style>
